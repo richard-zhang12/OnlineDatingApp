@@ -1,0 +1,188 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\*\listtable 
+{\list\listhybrid
+{\listlevel\levelnfc0\leveljc0\levelstartat1{\leveltext\'02\'00.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc4\leveljc0\levelstartat1{\leveltext\'02\'01.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc3\leveljc0\levelstartat1{\leveltext\'02\'02.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc2\leveljc0\levelstartat1{\leveltext\'02\'03.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc1\leveljc0\levelstartat1{\leveltext\'02\'04.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc0\leveljc0\levelstartat1{\leveltext\'02\'05.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc4\leveljc0\levelstartat1{\leveltext\'02\'06.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc3\leveljc0\levelstartat1{\leveltext\'02\'07.;}{\levelnumbers\'01;}\jclisttab\tx0}
+{\listlevel\levelnfc23\leveljc1\levelstartat1{\leveltext\'01\'B7;}{\levelnumbers;}\f1\jclisttab\tx0}\listid1 }}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 1.    Getting ready to start project\par
+
+\pard 
+{\listtext\f0\u10625?\tab}\ls1\ilvl8\fi-360\li720\sa200\sl276\slmult1 Install nodejs.\par
+{\listtext\f0 1\tab}Install Visual Studio Code.\par
+{\listtext\f0 2\tab}Install Git Bash\par
+
+\pard\sa200\sl276\slmult1 2.    Initialize Application\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Create a folder called "onlinedatingapp"\par
+{\pntext\f1\'B7\tab}$ cd onlinedatingapp\par
+{\pntext\f1\'B7\tab}$ node -v (to check the version of node)\par
+{\pntext\f1\'B7\tab}$ npm init  (change the default index.js to server.js)\par
+{\pntext\f1\'B7\tab}$ npm i g nodemon\par
+{\pntext\f1\'B7\tab}$ npm i body-parser ejs express lodash mongoose\par
+
+\pard\sa200\sl276\slmult1 3.    Back-End Development\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Open the Visual Studio Code, create a folder server.js.  Enter the codes below:\par
+
+\pard\sa200\sl276\slmult1 //jshint esversion:6\par
+const express = require("express");\par
+const bodyParser = require("body-parser");\par
+const mongoose = require('mongoose');\par
+const _ = require("lodash");\par
+const port = 3000;\par
+\par
+const app = express();\par
+\par
+app.set('view engine', 'ejs');\par
+app.use(bodyParser.urlencoded(\{\par
+  extended: true\par
+\}));\par
+app.use(express.static("public"));\par
+\par
+mongoose.connect("mongodb://localhost:27017/todolistDB", \{\par
+  useUnifiedTopology: true,\par
+  useNewUrlParser: true,\par
+  useFindAndModify: false\par
+\});\par
+app.get("/", function(req, res) \{\par
+    res.send('Hello world!');\par
+\});\par
+app.post("/", function(req, res) \{\par
+\par
+\});\par
+app.listen(process.env.PORT || 3000, function() \{\par
+  console.log(`Server is running on port $\{port\}`);\par
+\});\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 $  nodemon server.js\par
+
+\pard\sa200\sl276\slmult1 4.    View Engine\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to npmjs.com, type in to search "express-handlebars " .\par
+{\pntext\f1\'B7\tab}$ npm i express-handlebars\par
+{\pntext\f1\'B7\tab}In the server.js, add these codes:\par
+
+\pard\sa200\sl276\slmult1\tab const exphbs = require('express-handlebars');\par
+\tab // setup view engine\par
+\tab app.engine('handlebars', exphbs(\{defaultLayout:'main'\}));\par
+\tab app.set('view engine', 'handlebars');\par
+5.    Render template for view\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Create folder views/layouts and file main.handlebars\par
+{\pntext\f1\'B7\tab}In the main.handlebars, press Shift key and ! key, then enter to create the HTML backbone.\par
+{\pntext\f1\'B7\tab}Enter the codes in server.js: \par
+
+\pard\sa200\sl276\slmult1 //jshint esversion:6\par
+const express = require("express");\par
+const bodyParser = require("body-parser");\par
+const mongoose = require('mongoose');\par
+const _ = require("lodash");\par
+const exphbs = require('express-handlebars');\par
+const app = express();\par
+const port = 3000;\par
+\par
+// setup view engine\par
+app.engine('handlebars', exphbs(\{defaultLayout:'main'\}));\par
+app.set('view engine', 'handlebars');\par
+\par
+//app.set('view engine', 'ejs');\par
+app.use(bodyParser.urlencoded(\{\par
+  extended: true\par
+\}));\par
+app.use(express.static("public"));\par
+\par
+mongoose.connect("mongodb://localhost:27017/todolistDB", \{\par
+  useUnifiedTopology: true,\par
+  useNewUrlParser: true,\par
+  useFindAndModify: false\par
+\});\par
+app.get("/", function(req, res) \{\par
+    res.render('home');\par
+\});\par
+app.post("/", function(req, res) \{\par
+\par
+\});\par
+app.listen(process.env.PORT || 3000, function() \{\par
+  console.log(`Server is running on port $\{port\}`);\par
+\});\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Enter html codes in home.handlebars.\par
+
+\pard\sa200\sl276\slmult1 <h1>Welcome to Online Dating</h1>\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Enter the codes in main.handlebars.\par
+
+\pard\sa200\sl276\slmult1 <!DOCTYPE html>\par
+<html lang="en">\par
+<head>\par
+    <meta charset="UTF-8">\par
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\par
+    <title>Online Dating</title>\par
+</head>\par
+<body>\par
+    \{\{\{body\}\}\}\par
+</body>\par
+</html>\par
+6.    Nodemon Module\par
+In the package.json, update "scripts": \{ "start": "node server.js"\}\par
+$ npm install --save-dev nodemon  (use nodemon only in development)\par
+$ nodemon\par
+7.    Bootstrap\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to Bootstrapdownload, BootstrapCDN, copy the codes to the main.handlebars.\par
+
+\pard\sa200\sl276\slmult1 8.    Navbar Component\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Under views folder, create folder \b partials\b0 , then create file \b navbar.handlebars\b0 .  \par
+{\pntext\f1\'B7\tab}Go to Bootstrap Navbar, copy the codes and paste to the file navbar.handlebars.\par
+{\pntext\f1\'B7\tab}In the main.handlebars, add the codes: \par
+
+\pard\sa200\sl276\slmult1\tab <body>\par
+\b    \tab\tab  \{\{> navbar\}\}\par
+\b0    \tab\tab  \{\{\{body\}\}\}\par
+\tab </body>\par
+9.    Footer Component\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to Boostrap Navbar Placement, copy the codes from Fixed bottom.\par
+{\pntext\f1\'B7\tab}Under folder views/partials, create file \b footer.handlebars\b0 .  Paste to codes to it.\par
+{\pntext\f1\'B7\tab}In the main.handlebars, add the codes \{\{ > footer\}\} after \{\{\{body\}\}\}.\par
+
+\pard\sa200\sl276\slmult1 10.   Form\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to Bootstrap Form, copy and paste the codes to the file contact.handlebars.\par
+{\pntext\f1\'B7\tab}In the main.handlebars, \par
+
+\pard\sa200\sl276\slmult1\tab\{\{> navbar\}\}\par
+\b     \tab <div class="container">\par
+\b0         \tab\tab\{\{\{body\}\}\}\par
+\b     \tab </div>\par
+\b0    \tab  \{\{> footer\}\}\par
+11.   Dynamic Title\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the server.js, add an object to app.get like this:\par
+
+\pard\sa200\sl276\slmult1\tab app.get("/", function(req, res) \{\par
+   \tab\tab res.render('home', \b\{\par
+      \tab\tab\tab title: 'Home'\par
+   \tab  \tab\}\b0 );\par
+\tab\});\par
+\tab app.get("/about", function(req, res) \{\par
+    \tab\tab res.render('about', \{\par
+\b       \tab\tab\tab title: 'About'\par
+\b0     \tab\tab\});\par
+\tab\});\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the navbar.handlebars, add this code: \par
+
+\pard\sa200\sl276\slmult1\tab <a class="navbar-brand" href="#"> \b\{\{title\}\} \b0 </a>\par
+12.   GitHub\par
+}
+ 

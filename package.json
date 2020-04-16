@@ -1,0 +1,21 @@
+{
+  "name": "onlinedatingapp",
+  "version": "1.0.0",
+  "description": "Online Dating App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Richard Zhang",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.3",
+    "g": "^2.0.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.9",
+    "nodemon": "^2.0.3"
+  }
+}
