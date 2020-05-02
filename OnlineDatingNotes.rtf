@@ -1,4 +1,5 @@
 {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
 {\*\listtable 
 {\list\listhybrid
 {\listlevel\levelnfc0\leveljc0\levelstartat1{\leveltext\'02\'00.;}{\levelnumbers\'01;}\jclisttab\tx0}
@@ -184,5 +185,401 @@ $ nodemon\par
 
 \pard\sa200\sl276\slmult1\tab <a class="navbar-brand" href="#"> \b\{\{title\}\} \b0 </a>\par
 12.   GitHub\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 $ git init\par
+{\pntext\f1\'B7\tab}$ git add .\par
+{\pntext\f1\'B7\tab}$ git commit -am "initial commit"\par
+{\pntext\f1\'B7\tab}Go to github.com to create a new repository "OnlineDatingApp"\par
+{\pntext\f1\'B7\tab}Copy the codes from the next page to the command line\par
+
+\pard\sa200\sl276\slmult1 $ git remote add origin {{\field{\*\fldinst{HYPERLINK https://github.com/richard-zhang12/OnlineDatingApp.git }}{\fldrslt{https://github.com/richard-zhang12/OnlineDatingApp.git\ul0\cf0}}}}\f0\fs22\par
+$ git push -u origin master\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 go back to github.com and refresh the page.\par
+
+\pard\sa200\sl276\slmult1 13.   Heroku CLI.  Install the Heroku on the computer.\par
+14.   Deployment\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 $ clear\par
+{\pntext\f1\'B7\tab}$ heroku -v (to check the version)\par
+{\pntext\f1\'B7\tab}$ git commit -m "first commit"\par
+{\pntext\f1\'B7\tab}$ heroku login\par
+{\pntext\f1\'B7\tab}$ heroku create\par
+{\pntext\f1\'B7\tab}$ git push heroku master (now your web page is alive)\par
+
+\pard\sa200\sl276\slmult1 15.   Form Submit (using body-parser and app.post)\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the contact.handlebars, add <form \b action="/contactus" method="POST"\b0 >, also add \b name="fullname" \b0 to the input fullname tag, etc.\par
+
+\pard\sa200\sl276\slmult1 16.   Parse Incoming Data\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Install the body-parser, which I already did.\par
+
+\pard\sa200\sl276\slmult1 17.   Mongoose Module\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Install Mongoose, which I already did.\par
+{\pntext\f1\'B7\tab}Inside the project, create a folder called "models".  Inside this folder, create a file "message.js".\par
+{\pntext\f1\'B7\tab}Add these codes to message.js:\par
+
+\pard\sa200\sl276\slmult1 const mongoose = require('mongoose');\par
+const Schema = mongoose.Schema;\par
+const messageSchema = new Schema(\{\par
+    fullname: String,\par
+    email: String,\par
+    message: String,\par
+    date: \{\par
+        type: Date,\par
+        default: Date.now\par
+    \}\par
+\});\par
+module.exports = mongoose.model('Message', messageSchema);\par
+18.   Storing data into database\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Inside the serve.js, add this code: \par
+
+\pard\sa200\sl276\slmult1\tab const mongoose = require('mongoose');\par
+\tab const Message = require('./models/message');\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Download mongoDB database from web site.\par
+{\pntext\f1\'B7\tab}Go to mongoDB to create a cluster called"OnlineDatingApp".  Connect to it using the string.  Copy the connection string.\par
+{\pntext\f1\'B7\tab}Create folder called "config", and create a file "keys.js".  Inside the file, add the codes you just copy from mongoDB.  Change the <password> to the real password.\par
+
+\pard\sa200\sl276\slmult1 module.exports = \{\par
+    MongoDB: 'mongodb+srv://onlinedatingapp:<password>@onlinedatingapp-otcyj.mongodb.net/test?retryWrites=true&w=majority'\par
+\};\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to the server.js, add codes:    const Keys  = require('./config/keys');\par
+{\pntext\f1\'B7\tab}Go to the .gitignore, add the keys.js to the file.\par
+{\pntext\f1\'B7\tab}Go to the server.js, add codes: \par
+
+\pard\sa200\sl276\slmult1 // connect to MongoDB\par
+mongoose.connect(Keys.MongoDB, \{\par
+    useUnifiedTopology: true,\par
+    useNewUrlParser: true,\par
+    useFindAndModify: false\par
+  \}).then(() => \{\par
+  console.log('Server is connected to MongoDB');\par
+\}).catch((err) => \{\par
+  console.log(err);\par
+\});\par
+19&20.   Storing data into database, and Dynamically display data\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the app.js, add codes:\par
+
+\pard\sa200\sl276\slmult1 app.post("/contactus", function(req, res) \{\par
+  const newMessage = \{\par
+    fullname: req.body.fullname,\par
+    email: req.body.email,\par
+    message: req.body.message,\par
+    date: new Date()\par
+  \};\par
+  new Message(newMessage).save((err, message) => \{\par
+    if (err) \{\par
+      throw err;\par
+    \} else \{\par
+      Message.find(function(err, messages) \{\par
+        if (err) \{\par
+          res.render('noMessage', \{\par
+            title: 'Not found'\par
+          \});\par
+        \} else \{\par
+            const usersMessages = messages.map(e => \{\par
+              return \{\par
+                fullname: e.fullname,\par
+                email: e.email,\par
+                message: e.message,\par
+                date: e.date\par
+              \}\par
+            \})\par
+          \par
+          res.render('newmessage', \{\par
+            title: 'Sent',\par
+            messages: usersMessages\par
+          \});\par
+        \}\par
+      \});\par
+    \}\par
+  \});\par
+\});\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the views folder, create a file "newMessage.handlebars".  Write codes:\par
+
+\pard\sa200\sl276\slmult1 <h1>Thank you for contacting!</h1>\par
+\{\{#each messages\}\}\par
+<p>\{\{fullname\}\}</p>\par
+<p>\{\{email\}\}</p>\par
+<p>\{\{message\}\}</p>\par
+<small>\{\{date\}\}</small>\par
+<hr>\par
+\{\{else\}\}\par
+<p>No messages ...</p>\par
+\{\{/each\}\}\par
+<a href="/contact"><button class="btn btn-success">Contact again</button></a>\par
+21.   User Model\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the models folder, create user.js.  Add codes.\par
+
+\pard\sa200\sl276\slmult1 const mongoose = require('mongoose');\par
+const Schema = mongoose.Schema;\par
+\par
+const userSchema = new Schema(\{\par
+    facebook: String,\par
+    firstname: String,\par
+    lastname: String,\par
+    fullname: String,\par
+    image: String,\par
+    email: String,\par
+    city: String,\par
+    country: String,\par
+    online: \{\par
+        type: Boolean,\par
+        default: false\par
+    \},\par
+    wallet: \{\par
+        type: Number,\par
+        default: 0\par
+    \}\par
+\});\par
+\par
+module.exports = mongoose.model('User', userSchema);\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to app.js, add codes: \par
+
+\pard\sa200\sl276\slmult1\tab const User = require('./models/user');\par
+22&23.   Login With Facebook, Facebook App ID and Secret\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Log in to {{\field{\*\fldinst{HYPERLINK https://developers.facebook.com/ }}{\fldrslt{https://developers.facebook.com/\ul0\cf0}}}}\f0\fs22 , create app called "OnlineDatingApp".  Go to Settings/Basic, in the App Domains, type"{{\field{\*\fldinst{HYPERLINK http://localhost:3000/ }}{\fldrslt{http://localhost:3000/\ul0\cf0}}}}\f0\fs22 ";  copy the App ID and App Secret to the keys.js.\par
+{\pntext\f1\'B7\tab}Back to facebook again, click "Create Platform" button.  Click [Webiste].  At Website Site URL, type "localhost: 3000"\par
+
+\pard\sa200\sl276\slmult1 24&25.   Passport Module, Auth Configuration\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 npm i --save passport passport-facebook cookie-parser express-session\par
+{\pntext\f1\'B7\tab}Go to app.js, add codes: \par
+
+\pard\sa200\sl276\slmult1\tab const passport = require('passport');\par
+\tab const cookieParser = require('cookie-parser');\par
+\tab const session = require('express-session');\par
+\tab //configuration for authentication\par
+\tab app.use(cookieParser());\par
+\tab app.use(session(\{\par
+  \tab secret: 'mysecret',\par
+  \tab resave: true,\par
+ \tab  saveUninitialized: true\par
+\tab\}));\par
+
+\pard\sa160\sl259\slmult0\tx90\tx450\tab\tab\tab app.use(passport.initialize());\par
+\tab\tab\tab app.use(passport.session());\par
+26&27&28&29.   Facebook Strategy, FB Auth Process, Storing User Data, Display User Data on profile page\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa160\sl259\slmult0\tx90\tx450 Create a folder "passport", and create a file "facebook.js".\par
+{\pntext\f1\'B7\tab}Add codes to the facebook.js:\par
+
+\pard\sa160\sl259\slmult0\tx90\tx450\tab\tab const passport = require('passport');\par
+const FacebookStrategy = require('passport-facebook').Strategy;\par
+const User = require('../models/user');\par
+const keys = require('../config/keys');\par
+\par
+passport.serializeUser((user, done) => \{\par
+    done(null, user.id);\par
+\});\par
+\par
+passport.deserializeUser((id,done) => \{\par
+    User.findById(id, (err, user) => \{\par
+        done(err, user);\par
+    \});\par
+\});\par
+\par
+passport.use(new FacebookStrategy(\{\par
+    clientID: keys.FacebookAppID,\par
+    clientSecret: keys.FacebookAppSecret,\par
+    callbackURL: '{{\field{\*\fldinst{HYPERLINK http://localhost:3000/auth/facebook/callback }}{\fldrslt{http://localhost:3000/auth/facebook/callback\ul0\cf0}}}}\f0\fs22 ', \par
+    profileFields: ['email', 'name','displayName', 'photos']\par
+\}, (accessToken, refreshToken, profile, done) => \{\par
+    console.log(profile);\par
+    User.findOne(\{facebook:profile.id\}, (err, user) => \{\par
+        if (err) \{\par
+            return done(err);\par
+        \}\par
+        if (user) \{\par
+            return done(null, user)\par
+        \} else \{\par
+            const newUser = \{\par
+                facebook: profile.id,\par
+                fullname: profile.displayName,\par
+                lastname: profile.name.familyName,\par
+                firstname: profile.name.givenName,\par
+                image: `https://graph.facebook.com/$\{profile.id\}/picture?type=large`,\par
+                email: profile.emails[0].value\par
+            \}\par
+            new User(newUser).save((err, user) => \{\par
+                if (err) \{\par
+                    return done(err);\par
+                \}\par
+                if (user) \{\par
+                    return done(null, user);\par
+                \}\par
+            \});\par
+        \}\par
+    \});\par
+\}));\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa160\sl259\slmult0\tx90\tx450 In the server.js, add codes:\par
+
+\pard\sa160\sl259\slmult0\tx90\tx450 //load facebook strategy\par
+require('./passport/facebook');\par
+app.get('/auth/facebook', passport.authenticate('facebook',\{\par
+  scope: ['email']\par
+\}));\par
+app.get('/auth/facebook/callback', passport.authenticate('facebook',\{\par
+  successRedirect: '/profile',\par
+  failureRedirect: '/'\par
+\}));\par
+\par
+app.get('/profile', function(req, res) \{\par
+  User.findById(\{_id: req.user._id\}).then((user) => \{\par
+    if (user) \{\par
+      const userFound = \{\par
+        image: user.image,\par
+        fullname: user.fullname,\par
+        email: user.email\par
+      \};\par
+      res.render('profile', \{\par
+        title: 'Profile',\par
+        user: userFound\par
+      \});\par
+    \}\par
+  \});\par
+\});\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to Views folder to create a  file called "profile.handlebars".  And add codes:\par
+
+\pard\sa200\sl276\slmult1 <div class="row">\par
+    <div class="col-sm">\par
+            <div class="card" style="width: 18rem;">\par
+                <img class="card-img-top" src="\{\{user.image\}\}" alt="...">\par
+                <div class="card-body">\par
+            </div>\par
+        </div>\par
+    </div>\par
+    <div class="col-sm">\par
+        <h5 class="card-title">Fullname: \{\{user.fullname\}\}</h5>\par
+        <p class="card-text">Email: \{\{user.email\}\}</p>\par
+    </div>\par
+</div>\par
+30.   Logout User\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Add codes to navbar:\par
+
+\pard\sa200\sl276\slmult1       <li class="nav-item">\par
+        <a class="nav-link" href="/logout">Logout</a>\par
+      </li>\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the server.js, add app.get('/logout') and save user.online information.\par
+
+\pard\sa200\sl276\slmult1 app.get('/profile', function(req, res) \{\par
+  User.findById(\{_id: req.user._id\}).then((user) => \{\par
+    if (user) \{\par
+      const userFound = \{\par
+        image: user.image,\par
+        fullname: user.fullname,\par
+        email: user.email\par
+      \};\par
+      user.online = true;\par
+      user.save((err, user) => \{\par
+        if (err) \{\par
+          throw err;\par
+        \} else \{\par
+          res.render('profile', \{\par
+            title: 'Profile',\par
+            user: userFound\par
+          \});\par
+    \par
+        \}\par
+      \})\par
+    \}\par
+  \});\par
+\});\par
+\par
+app.get('/logout', (req, res) => \{\par
+  User.findById(\{_id: req.user._id\}).then((user) => \{\par
+    user.online = false;\par
+    user.save((err, user) => \{\par
+      if (err) \{\par
+        throw err\par
+      \} \par
+      if (user) \{\par
+        req.logOut();\par
+        res.redirect('/');\par
+      \par
+      \}\par
+    \})\par
+  \})\par
+\});\par
+31.   Access control.  \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 To create global user object, add codes to server.js:\par
+
+\pard\sa200\sl276\slmult1 // Make user global object\par
+app.use((req, res, next) => \{\par
+  res.locals.user = req.user || null;\par
+  next();\par
+\})\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the navbar, add condition to the code (only when user is logged in, Logout is displaced)\par
+
+\pard\sa200\sl276\slmult1       \{\{#if user\}\}\par
+            <li class="nav-item">\par
+        <a class="nav-link" href="/logout">Logout</a>\par
+            </li>\par
+      \{\{else\}\}\par
+      <li class="nav-item active">\par
+        <a class="nav-link" href="/about">About <span class="sr-only">(current)</span></a>\par
+      </li>\par
+\par
+      <li class="nav-item">\par
+        <a class="nav-link" href="/contact">Contact</a>\par
+      </li>\par
+      \{\{/if\}\}\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the home, add condition as well (only when logged in to display Login button):\par
+
+\pard\sa200\sl276\slmult1 <h1>Welcome to Online Dating</h1>\par
+\{\{#if user\}\}\par
+<p>You are logged in..</p>\par
+\{\{else\}\}\par
+<a href="/auth/facebook">\par
+<button type="button" class="btn btn-primary btn-lg">Login With Facebook</button>\par
+</a>\par
+\{\{/if\}\}\par
+32.   Auth Helpers\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Create a folder "helpers", and create a file "auth.js".  Add codes:\par
+
+\pard\sa200\sl276\slmult1 module.exports = \{\par
+    requireLogin: (req, res, next) => \{\par
+        if (req.isAuthenticated()) \{\par
+            return next();            \par
+        \} else\{\par
+            res.redirect('/');\par
+        \}\par
+    \},\par
+    ensureGuest: (req, res, next) => \{\par
+        if (req.isAuthenticated()) \{\par
+            res.redirect('/profile');\par
+        \} else \{\par
+            return next();\par
+        \}\par
+    \}\par
+\}\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 In the server.js, add codes:\par
+
+\pard\sa200\sl276\slmult1 //Load Helpers\par
+const \{requireLogin, ensureGuest\} = require('./helpers/auth');\par
+app.get("/", \b ensureGuest\b0 , function(req, res) \{\par
+app.get("/about", \b ensureGuest\b0 , function(req, res) \{ ...\par
+app.get("/contact", \b ensureGuest\b0 , function(req, res) \{ ...\par
+app.get('/profile', \b requireLogin\b0 , function(req, res) \{ ...\par
+\par
 }
  
