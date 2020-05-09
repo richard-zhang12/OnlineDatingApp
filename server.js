@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-
+const flash = require('connect-flash');
 //Load models
 const Message = require('./models/message');
 const User = require('./models/user');
@@ -30,15 +30,26 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-// Make user global object
+app.use(flash());
 app.use((req, res, next) => {
-  res.locals.user = req.user || null;
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
   next();
-})
+});
+// setup express static folder to serve js, css files
+app.use(express.static('public'));
+// Make user global object
+// app.use((req, res, next) => {
+//   res.locals.user = req.user || null;
+//   next();
+// })
 //load facebook strategy
 require('./passport/facebook');
+require('./passport/local');
 // connect to MongoDB
-mongoose.connect(Keys.MongoDB, {
+// mongoose.connect(Keys.MongoDB, {
+  mongoose.connect("mongodb://localhost:27017/userDB", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useFindAndModify: false
@@ -87,6 +98,7 @@ app.get('/profile', requireLogin, function(req, res) {
         fullname: user.fullname,
         email: user.email
       };
+      
       user.online = true;
       user.save((err, user) => {
         if (err) {
@@ -101,6 +113,77 @@ app.get('/profile', requireLogin, function(req, res) {
       })
     }
   });
+});
+
+app.get('/newAccount', (req,res) => {
+    res.render('newAccount', {
+      title: 'Signup'
+    });
+
+});
+
+app.post('/signup', (req, res) => {
+  let errors = [];
+  const {fullname, email, password, password2} = req.body;
+  if (req.body.password !== req.body.password2) {
+    errors.push({text:'Password does not match'});
+  }
+  if (req.body.password.length < 5) {
+    errors.push({text: 'Password must be at least 5 characters'});
+  }
+  if (errors.length > 0) {
+    res.render('newAccount', {
+      errors: errors,
+      title: 'Error',
+      fullname: fullname,
+      email: email,
+      password: password,
+      password2: password2
+    }); 
+  } else {
+    User.findOne({email}, function(err, user) {
+      
+      if (user) {
+        
+        let errors = [];
+        errors.push({text: 'Email already exists'});
+        res.render(('newAccount'), {
+        title: 'Signup',
+        errors: errors,
+        });
+      } else {
+        User.register({fullname, email}, password, function(err, user) {
+          if (err) {
+            console.log(err);
+            res.redirect("/newAccount");
+          } else {
+            passport.authenticate("local")(req, res, function() {
+              let success = [];
+              success.push({text: 'You have successfully created account.  You can login now'});
+              res.render('home', {
+                success: success
+              });
+          })
+          }
+        });
+      }
+    });
+  }
+   
+});
+
+app.post ('/login', passport.authenticate('local', {
+  successRedirect: '/profile',
+  failureRedirect: '/loginErrors',
+  failureFlash: true
+}));
+
+app.get('/loginErrors', (req, res) => {
+  let errors = [];
+  errors.push({text: 'User not found or password incorrect'});
+  res.render('home', {
+    errors: errors
+  })
 });
 
 app.get('/logout', (req, res) => {

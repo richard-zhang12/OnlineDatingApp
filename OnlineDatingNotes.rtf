@@ -204,7 +204,8 @@ $ git push -u origin master\par
 {\pntext\f1\'B7\tab}$ heroku -v (to check the version)\par
 {\pntext\f1\'B7\tab}$ git commit -m "first commit"\par
 {\pntext\f1\'B7\tab}$ heroku login\par
-{\pntext\f1\'B7\tab}$ heroku create\par
+{\pntext\f1\'B7\tab}$ heroku create (if use exising one, skip this step).  \par
+{\pntext\f1\'B7\tab}Go to Heroku and copy from deployment to:  $ heroku git:remote -a shrouded-fortress-53650\par
 {\pntext\f1\'B7\tab}$ git push heroku master (now your web page is alive)\par
 
 \pard\sa200\sl276\slmult1 15.   Form Submit (using body-parser and app.post)\par
@@ -580,6 +581,25 @@ app.get("/", \b ensureGuest\b0 , function(req, res) \{\par
 app.get("/about", \b ensureGuest\b0 , function(req, res) \{ ...\par
 app.get("/contact", \b ensureGuest\b0 , function(req, res) \{ ...\par
 app.get('/profile', \b requireLogin\b0 , function(req, res) \{ ...\par
+40.   Static folder to serve css and js files\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Create folders public, css, and js.  Add files styles.css and script.js\par
+{\pntext\f1\'B7\tab}In the server.js, add code: app.use(express.static('public'));\par
+{\pntext\f1\'B7\tab}Add codes to the <head>:   <link rel="stylesheet" href="/css/style.css">\par
+
+\pard\sa200\sl276\slmult1                                                                    <script src="/js/script.js"></script>\par
+41-51 Login With Email\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 $ npm install --save connect-flash\par
+{\pntext\f1\'B7\tab}Add code to server.js: \par
+
+\pard\sa200\sl276\slmult1 const flash = require('connect-flash');\par
+app.use((req, res, next) => \{\par
+  res.locals.success_msg = req.flash('success_msg');\par
+  res.locals.error_msg = req.flash('error_msg');\par
+  res.locals.error = req.flash('error');\par
+  next();\par
+\});\par
 \par
 }
  
