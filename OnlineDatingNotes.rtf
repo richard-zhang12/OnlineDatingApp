@@ -600,6 +600,17 @@ app.use((req, res, next) => \{\par
   res.locals.error = req.flash('error');\par
   next();\par
 \});\par
-\par
+52-58 Deployment\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Inside the config folder, three files: keys.js, dev.js, prod.js.\par
+{\pntext\f1\'B7\tab}Cut&paste the orginal codes in keys.js to dev.js, enter codes in the keys.js:\par
+
+\pard\sa200\sl276\slmult1 if (process.env.NODE_ENV === 'production') \{\par
+    module.exports = require('./prod');\par
+\} else \{\par
+    module.exports = require('./dev');\par
+\}\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1\par
 }
  

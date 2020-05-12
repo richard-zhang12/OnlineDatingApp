@@ -48,8 +48,8 @@ app.use(express.static('public'));
 require('./passport/facebook');
 require('./passport/local');
 // connect to MongoDB
-// mongoose.connect(Keys.MongoDB, {
-  mongoose.connect("mongodb://localhost:27017/userDB", {
+mongoose.connect(Keys.MongoDB, {
+  // mongoose.connect("mongodb://localhost:27017/userDB", {
     useUnifiedTopology: true,
     useNewUrlParser: true,
     useFindAndModify: false
