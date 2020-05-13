@@ -610,7 +610,12 @@ app.use((req, res, next) => \{\par
 \} else \{\par
     module.exports = require('./dev');\par
 \}\par
+59-69    AWS S3 Storage, uploading image\par
 
-\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1\par
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li720\sa200\sl276\slmult1 Go to aws.amazon.com, create an account (free for 12 months, expired on 5/12/2021)\par
+{\pntext\f1\'B7\tab}Create a new bucket called online-dating-app2.\par
+{\pntext\f1\'B7\tab}Go to Services, IAM to create Policy.  Choose S3 service.  In Resources, add bucket online-dating-app2.  In object, add the same bucket name and click Any for Object name.  In Name, type in online-dating-app-policy.\par
+{\pntext\f1\'B7\tab}Click on Users, type user name: online-dating-app-user, select Access Type: Programmatic access.  Click Attach existing policies directly and attached the policy we just created.  \par
+{\pntext\f1\'B7\tab}After the new user is created, copy the Access key ID and Secret Access Key to the dev.js and prod.js.  Also go to Heroku to add to Config Vars.\par
 }
  
